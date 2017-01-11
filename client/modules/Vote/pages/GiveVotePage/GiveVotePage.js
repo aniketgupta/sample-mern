@@ -81,6 +81,12 @@ class GiveVotePage extends Component {
                     </Button>
                   </Col>
                 </FormGroup>
+                <FormGroup>
+
+                      <LinkContainer to="/total_votes">
+                        <a>Total votes</a>
+                      </LinkContainer>
+                  </FormGroup>
               </Form>
             </Well>
           </Col>

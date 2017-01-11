@@ -101,6 +101,11 @@ class TotalVotesPage extends Component {
                      {this.props.votesArjun}
                   </Col>
                 </FormGroup>
+                <FormGroup>
+                  <LinkContainer to="/give_vote">
+                    <a>Give vote</a>
+                  </LinkContainer>
+                </FormGroup>
               </Form>
             </Well>
           </Col>
