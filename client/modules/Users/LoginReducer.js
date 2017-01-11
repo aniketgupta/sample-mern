@@ -6,6 +6,7 @@ const initialState = {
   isLoggingIn : true,
   isLoggedIn : false,
   isLoginFailed : false,
+  status : false,
   errorMessage : '',
   user: {
     email : '',
@@ -19,6 +20,7 @@ const LoginReducer = (state = initialState, action) => {
       return Object.assign( {}, state, {
         isLoggingIn : false,
         isLoggedIn : true,
+        status : action.status,
         user: {
           email : '',
           password : ''

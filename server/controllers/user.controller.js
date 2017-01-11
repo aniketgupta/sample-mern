@@ -72,7 +72,8 @@ export function login (req, res) {
             var token = jwt.sign(result, serverConfig.secret)
             res.status(200).json({
               success: true,
-              token: token
+              token: token,
+              successMessage: "Login Successfull."
             })
           }  
         }); 

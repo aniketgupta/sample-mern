@@ -17,6 +17,7 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 require("moment-duration-format");
 import DateTimeField from 'react-bootstrap-datetimepicker';
+import AuthClient from '../../../../../client/AuthClient';
 /*import '../../../../../node_modules/react-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css';*/
 /*import DateTimePicker from 'react-datetimepicker-bootstrap';*/
 
@@ -24,7 +25,7 @@ import DateTimeField from 'react-bootstrap-datetimepicker';
 /*import styles from './SchedulePage.css';*/
 
 import { createScheduleRequest } from '../../ScheduleActions';
-import { browserHistory } from 'react-router';
+import { browserHistory, Link } from 'react-router';
 
 class ScheduleWidget extends Component {
 
@@ -52,6 +53,10 @@ class ScheduleWidget extends Component {
     };
   }
 
+  /*componentWillMount() {
+    this.props.dispatch(checkToken());
+  }*/
+
   handleStartTime(newTime) {
     console.log("StartTime:", newTime);
     this.setState({startTime: newTime});
@@ -75,6 +80,11 @@ class ScheduleWidget extends Component {
 
   }
 
+  logout() {
+    AuthClient.removeToken();
+
+  }
+
   createSchedule(e) {
     e.preventDefault();
     
@@ -92,76 +102,85 @@ class ScheduleWidget extends Component {
     /*if(this.props.isLoginFailed && this.props.errorMessage) {
       alert(this.props.errorMessage);
     }*/
-    const {startTime, startTimeFormat, startTimeInputFormat, startTimeMode, endTime, endTimeFormat, endTimeInputFormat, endTimeMode} = this.state;
-    return (
-      <Grid>
-        <Row>
-          <h2 style={{ textAlign: 'center' }}>Practise Timings</h2>
-          <hr/><Col md={3}/>
-          <Col md={6}>
-            <Well>
-              <Form horizontal>
-                <FormGroup controlId="formHorizontalSTime">
-                  <Col componentClass={ControlLabel} sm={2}>
-                    Start Time
-                  </Col>
-                  <Col sm={10}>
-                    {/*<FormControl type="email" placeholder="Email" value={this.props.user.email} onChange={this.handleEmail} ref="email" />*/}
-                    {/*<TimePicker onChange={this.handleStartTime} value={this.state.StartTime} />*/}
-                    {/*<Datetime format="HH:mm:ss"/>*/}
-                    <DateTimeField                
-                      dateTime={startTime}
-                      format={startTimeFormat}
-                      inputFormat={startTimeInputFormat}
-                      onChange={this.handleStartTime}
-                      mode={startTimeMode}
-                    />
-                  </Col>
-                </FormGroup>
+    if(AuthClient.getToken() != null) {
+      const {startTime, startTimeFormat, startTimeInputFormat, startTimeMode, endTime, endTimeFormat, endTimeInputFormat, endTimeMode} = this.state;
+      return (
+        <Grid>
+          <Row>
+            <h2 style={{ textAlign: 'center' }}>Practise Timings</h2>
+            <hr/><Col md={3}/>
+            <Link to={'/signin'} onClick={this.logout}>Logout</Link>
+            <Col md={6}>
+              <Well>
+                <Form horizontal>
+                  <FormGroup controlId="formHorizontalSTime">
+                    <Col componentClass={ControlLabel} sm={2}>
+                      Start Time
+                    </Col>
+                    <Col sm={10}>
+                      {/*<FormControl type="email" placeholder="Email" value={this.props.user.email} onChange={this.handleEmail} ref="email" />*/}
+                      {/*<TimePicker onChange={this.handleStartTime} value={this.state.StartTime} />*/}
+                      {/*<Datetime format="HH:mm:ss"/>*/}
+                      <DateTimeField                
+                        dateTime={startTime}
+                        format={startTimeFormat}
+                        inputFormat={startTimeInputFormat}
+                        onChange={this.handleStartTime}
+                        mode={startTimeMode}
+                      />
+                    </Col>
+                  </FormGroup>
 
-                <FormGroup controlId="formHorizontalETime">
-                  <Col componentClass={ControlLabel} sm={2}>
-                    End Time
-                  </Col>
-                  <Col sm={10}>
-                    {/*<FormControl type="password" placeholder="Password" value={this.props.user.password} onChange={this.handlePassword} ref="password" />*/}
-                    {/*<TimePicker onChange={this.handleEndTime} value={this.state.EndTime} />*/}
-                    <DateTimeField                
-                      dateTime={endTime}
-                      format={endTimeFormat}
-                      inputFormat={endTimeInputFormat}
-                      onChange={this.handleEndTime}
-                      mode={endTimeMode}
-                    />
-                  </Col>
-                </FormGroup>
+                  <FormGroup controlId="formHorizontalETime">
+                    <Col componentClass={ControlLabel} sm={2}>
+                      End Time
+                    </Col>
+                    <Col sm={10}>
+                      {/*<FormControl type="password" placeholder="Password" value={this.props.user.password} onChange={this.handlePassword} ref="password" />*/}
+                      {/*<TimePicker onChange={this.handleEndTime} value={this.state.EndTime} />*/}
+                      <DateTimeField                
+                        dateTime={endTime}
+                        format={endTimeFormat}
+                        inputFormat={endTimeInputFormat}
+                        onChange={this.handleEndTime}
+                        mode={endTimeMode}
+                      />
+                    </Col>
+                  </FormGroup>
 
-                <FormGroup controlId="formHorizontalDuration">
-                  <Col componentClass={ControlLabel} sm={2}>
-                    Duration
-                  </Col>
-                  <Col sm={3}>
-                    <FormControl type="text" placeholder="Duration" value={this.state.duration} onChange={this.handleDuration} ref="duration" />
-                  </Col>
-                </FormGroup>
+                  <FormGroup controlId="formHorizontalDuration">
+                    <Col componentClass={ControlLabel} sm={2}>
+                      Duration
+                    </Col>
+                    <Col sm={3}>
+                      <FormControl type="text" placeholder="Duration" value={this.state.duration} onChange={this.handleDuration} ref="duration" />
+                    </Col>
+                  </FormGroup>
 
-                <FormGroup>
-                  <Col smOffset={2} sm={10}>
-                    <Button type="submit" onClick={this.createSchedule}>
-                      Create
-                    </Button>
-                    &nbsp; &nbsp;
-                    <LinkContainer to="/schedule/view">
-                      <a>View Schedule</a>
-                    </LinkContainer>
-                  </Col>
-                </FormGroup>
-              </Form>
-            </Well>
-          </Col>
-        </Row>
-      </Grid>
-    );
+                  <FormGroup>
+                    <Col smOffset={2} sm={10}>
+                      <Button type="submit" onClick={this.createSchedule}>
+                        Create
+                      </Button>
+                      &nbsp; &nbsp;
+                      <LinkContainer to="/appointment/book">
+                        <a>Book Appointment</a>
+                      </LinkContainer>
+                    </Col>
+                  </FormGroup>
+                </Form>
+              </Well>
+            </Col>
+          </Row>
+        </Grid>
+      );
+    } else {
+        return (
+          <div>
+            <h1>Not Found</h1>
+          </div>
+      );
+    }
   }
 }
 

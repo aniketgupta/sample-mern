@@ -1,4 +1,5 @@
 import callApi from '../../util/apiCaller';
+import { browserHistory } from 'react-router';
 
 // Export Constants
 export const REGISTER_USER = 'REGISTER_USER';
@@ -17,11 +18,15 @@ export function registerUser(user) {
   };
 }
 
-export function loginUser(user) {
-  return {
-    type: LOGIN_USER,
-    user,
-  };
+export function loginUser(response, user) {
+  console.log("resp", response);
+  if(response.success) {
+    return {
+      type: LOGIN_USER,
+      status: response.success,
+      user,
+    };
+  }
 }
 
 export function loginUserFailed(error) {
@@ -66,6 +71,7 @@ export function registerUserRequest(user) {
         email: user.emailRef,
         username: user.unameRef,
         password: user.passwordRef,
+        role: "D"
       },
     }).then(res => dispatch(registerUser(res.user)));
   };
@@ -83,8 +89,10 @@ export function loginUserRequest(user) {
       if(res.success) {
         localStorage.setItem("token", res.token);
         console.log(localStorage.getItem('token'));
-        dispatch(loginUser(res.user))
+        dispatch(loginUser(res, res.user))
+        //use return before dispatch
         dispatch(resetLoginForm())
+        browserHistory.push('/schedule');
       } else {
         dispatch(loginUserFailed(res.errorMessage));
       }

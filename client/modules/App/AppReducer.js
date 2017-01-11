@@ -1,5 +1,5 @@
 // Import Actions
-import { TOGGLE_ADD_POST, TOGGLE_LOGIN_FORM } from './AppActions';
+import { TOGGLE_ADD_POST, TOGGLE_LOGIN_FORM, TOGGLE_ADD_VOTE } from './AppActions';
 
 // Initial State
 const initialState = {
@@ -16,7 +16,12 @@ const AppReducer = (state = initialState, action) => {
      case TOGGLE_LOGIN_FORM:
      	return {
      		showLoginForm: !state.showLoginForm,
-     	} 
+     	}
+
+    case TOGGLE_ADD_VOTE:
+      return {
+        showAddVote: !state.showAddVote,
+      } 
 
     default:
       return state;

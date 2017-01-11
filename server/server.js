@@ -36,6 +36,8 @@ import { fetchComponentData } from './util/fetchData';
 import posts from './routes/post.routes';
 import users from './routes/user.routes';
 import schedule from './routes/schedule.routes';
+import appointment from './routes/appointment.routes';
+import votes from './routes/vote.routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
 
@@ -64,7 +66,7 @@ app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(Express.static(path.resolve(__dirname, '../dist')));
-app.use('/api', [posts, users, schedule]);
+app.use('/api', [posts, users, schedule, appointment, votes]);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -88,6 +90,8 @@ const renderFullPage = (html, initialState) => {
         <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'/>
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.css">
       </head>
       <body>
         <div id="root">${html}</div>

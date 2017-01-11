@@ -6,6 +6,10 @@ import SigninWidget from './modules/Users/pages/SigninPage/SigninPage.js'
 import SignupWidget from './modules/Users/pages/SignupPage/SignupPage.js';
 import ScheduleWidget from './modules/Schedule/pages/SchedulePage/SchedulePage.js'
 import ViewScheduleWidget from './modules/Schedule/pages/ViewSchedulePage/ViewSchedulePage.js'
+import BookAppointment from './modules/Appointment/pages/BookAppointment/BookAppointment.js'
+import GiveVotePage from './modules/Vote/pages/GiveVotePage/GiveVotePage.js'
+import TotalVotesPage from './modules/Vote/pages/TotalVotesPage/TotalVotesPage.js'
+import AuthClient from './AuthClient'
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -23,6 +27,27 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/Post/pages/PostListPage/PostListPage');
   require('./modules/Post/pages/PostDetailPage/PostDetailPage');
 }
+
+/*var userLoggedIn = (nextState, replace, callback) => {
+  
+    if(typeof(Storage) !== "undefined"){
+    if (!localStorage.getItem('token')) {
+      console.log("not found")
+      replace(pathname, '/')
+    } else {
+    callback();
+  }
+}
+}*/
+
+/*const userIsInATeam = (nextState, replace, callback) => {
+        console.log("--------");
+  
+      if (AuthClient.getToken() == null) {
+        replace(`/signin`)
+      }
+      callback();
+}*/
 
 // react-router setup with code-splitting
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
@@ -54,12 +79,24 @@ export default (
     <Route
       path="/schedule"
       component={ScheduleWidget}
+      
     />
     <Route
       path="/schedule/view"
       component={ViewScheduleWidget}
     />
+    <Route
+      path="/appointment/book"
+      component={BookAppointment}
+    />
+    <Route
+      path="/give_vote"
+      component={GiveVotePage}
+    />
+    <Route
+      path="/total_votes"
+      component={TotalVotesPage}
+    />
   </Route>
-
 
 );

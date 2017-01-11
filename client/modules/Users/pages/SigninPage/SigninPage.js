@@ -22,11 +22,27 @@ class SigninWidget extends Component {
     this.loginUser = this.loginUser.bind(this);
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
+    this.validEmail = false;
+    this.validEmailStatus = false;
+    this.validPassword = false;
+    this.validPasswordInput = false;
     /*this.resetForm = this.resetForm.bind(this);*/
     /*this.state = {
       email: '',
       password: ''
     }*/
+  }
+
+  /*componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if(nextProps.status == true) {
+      alert("aa", fun)
+    }
+  }*/
+
+  validateEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
   }
 
   handleEmail(e) {
@@ -35,6 +51,8 @@ class SigninWidget extends Component {
       email: e.target.value,
     })*/
     this.props.dispatch(clearError());
+    this.validEmail = e.target.value !== '' ? true : false;
+    this.validEmailStatus = this.validateEmail(e.target.value);
     this.props.dispatch(storeEmail( e.target.value ));
   }
 
@@ -44,15 +62,39 @@ class SigninWidget extends Component {
       password: e.target.value,
     })*/
     this.props.dispatch(clearError());
+    this.validPassword = e.target.value !== '' ? true : false;
+
+    if (e.target.value.length < 6) {
+      this.validPasswordInput = false;
+
+    } else {
+      this.validPasswordInput = true;
+    }
+
     this.props.dispatch(storePassword( e.target.value ));
   }
 
   loginUser(e) {
     e.preventDefault();
-    const emailRef = ReactDOM.findDOMNode(this.refs.email).value;
-    const passwordRef = ReactDOM.findDOMNode(this.refs.password).value;
-    if (emailRef && passwordRef) {
-      this.props.dispatch(loginUserRequest({ emailRef, passwordRef }));
+
+    if (!this.validEmail) {
+      alert("Please Input the Email")
+      ReactDOM.findDOMNode(this.refs.email).focus();
+    } else if (!this.validEmailStatus) {
+      alert("Invalid Email Address");
+      ReactDOM.findDOMNode(this.refs.email).focus();
+    } else if (!this.validPassword) {
+      alert("Please Input the Password")
+      ReactDOM.findDOMNode(this.refs.password).focus();
+    } else if (!this.validPasswordInput) {
+      alert("Please Make Sure Password is More than Six Letters");
+      ReactDOM.findDOMNode(this.refs.password).focus();
+    } else {
+      const emailRef = ReactDOM.findDOMNode(this.refs.email).value;
+      const passwordRef = ReactDOM.findDOMNode(this.refs.password).value;
+      if (emailRef && passwordRef) {
+        this.props.dispatch(loginUserRequest({ emailRef, passwordRef }))
+      }
     }
 
     /*if(this.props.isRegistered) {*/
@@ -64,8 +106,15 @@ class SigninWidget extends Component {
     /*}*/
   };
 
+  /*setData(res) {
+    alert('hello');
+    console.log("response", res);
+  }*/
+
+
 
   render() {
+    console.log("this props", this.props)
     if(this.props.isLoginFailed && this.props.errorMessage) {
       alert(this.props.errorMessage);
     }
@@ -129,6 +178,7 @@ function mapStateToProps(state) {
     isLoggedIn : state.login.isLoggedIn,
     isLoginFailed : state.login.isLoginFailed,
     errorMessage : state.login.errorMessage,
+    status : state.login.status,
     user: {
       email : state.login.user.email,
       password : state.login.user.password

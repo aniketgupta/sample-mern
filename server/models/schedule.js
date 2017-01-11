@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
+import User from './user';
 
 const scheduleSchema = new Schema({
   practiseTimings: { type: Object},
@@ -8,7 +9,7 @@ const scheduleSchema = new Schema({
   "practiseTimings.$.monday.$.s1_start_time": { type: String },
   "practiseTimings.$.monday.$.s1_end_time": { type: String },
   appointmentDuration: { type: Number, required: true },
-  doctorID : { type: String, required: true },
+  doctorID : { type: String, required: true, ref: 'User' },
   clinicID : { type: String, required: true },
   dateAdded: { type: 'Date', default: Date.now, required: true },
 });

@@ -9,7 +9,9 @@ import posts from './modules/Post/PostReducer';
 import intl from './modules/Intl/IntlReducer';
 import user from './modules/Users/UserReducer';
 import login from './modules/Users/LoginReducer';
-import schedule from './modules/Schedule/ScheduleReducer'
+import schedule from './modules/Schedule/ScheduleReducer';
+import doctor from './modules/Appointment/AppointmentReducer'
+import vote from './modules/Vote/VoteReducer'
 
 // Combine all reducers into one root reducer
 export default combineReducers({
@@ -18,5 +20,7 @@ export default combineReducers({
   intl,
   user,
   login,
-  schedule
+  schedule,
+  doctor,
+  vote
 });

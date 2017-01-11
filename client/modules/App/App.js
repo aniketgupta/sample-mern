@@ -32,6 +32,10 @@ export class App extends Component {
     this.props.dispatch(toggleLoginForm());
   };
 
+  toggleAddVoteSection= () => {
+    this.props.dispatch(toggleAddVote());
+  };
+
   render() {
     return (
       <div>

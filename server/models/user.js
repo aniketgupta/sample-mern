@@ -9,6 +9,7 @@ const userSchema = new Schema({
   username: { type: 'String', required: true },
   password: { type: 'String', required: true },
   dateAdded: { type: 'Date', default: Date.now, required: true },
+  role: { type: 'String', required: true },
 });
 
 //store the hash password before each save
